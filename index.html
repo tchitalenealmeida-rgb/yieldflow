@@ -651,11 +651,16 @@ footer a { color: var(--amber); text-decoration: none; }
     </div>
 
     <div class="wallet-box">
-      <div class="wallet-label">Send USDC to — Ethereum / Polygon / Solana</div>
+      <div class="wallet-label">USDC · Ethereum Network (ERC-20) only</div>
       <div class="wallet-address" id="wallet-display">YOUR_WALLET_ADDRESS_HERE</div>
     </div>
+    <button class="btn-copy" id="copy-btn-usdc" onclick="copyWallet('usdc')">Copy USDC address</button>
 
-    <button class="btn-copy" id="copy-btn" onclick="copyWallet()">Copy wallet address</button>
+    <div class="wallet-box" style="margin-top:10px;">
+      <div class="wallet-label">BTC · Bitcoin Network</div>
+      <div class="wallet-address" id="btc-display">YOUR_BTC_ADDRESS_HERE</div>
+    </div>
+    <button class="btn-copy" id="copy-btn-btc" onclick="copyWallet('btc')" style="margin-bottom:10px;">Copy BTC address</button>
 
     <div class="modal-footer">
       After payment, send proof of transfer to <span>Tchitalene.almeida@gmail.com</span><br>
@@ -676,6 +681,7 @@ footer a { color: var(--amber); text-decoration: none; }
 // CONFIG — EDIT THESE BEFORE DEPLOYING
 // ============================================================
 const WALLET_ADDRESS = "0x2b0158eCC6A9A09b014d44AD0B8cAf9d87BA43C3";
+const BTC_ADDRESS    = "bc1qlamzawezyv8mgj7kxzmfefs93je0y0ar8jkt3u";
 const CONTACT_EMAIL  = "Tchitalene.almeida@gmail.com";
 const CURATOR_WEEK   = "Week 16 · 2026";
 // ============================================================
@@ -753,6 +759,7 @@ async function fetchData() {
 
     document.getElementById('week-label').textContent = CURATOR_WEEK;
     document.getElementById('wallet-display').textContent = WALLET_ADDRESS;
+    document.getElementById('btc-display').textContent = BTC_ADDRESS;
 
   } catch (e) {
     document.getElementById('table-loading').innerHTML =
@@ -908,17 +915,21 @@ function selectPlan(plan) {
   document.getElementById('plan-retail').classList.toggle('selected', plan === 'retail');
   document.getElementById('plan-pro').classList.toggle('selected', plan === 'pro');
 }
-function copyWallet() {
-  navigator.clipboard.writeText(WALLET_ADDRESS).then(() => {
-    const btn = document.getElementById('copy-btn');
+function copyWallet(type) {
+  const isUsdc = type === 'usdc';
+  const addr   = isUsdc ? WALLET_ADDRESS : BTC_ADDRESS;
+  const btnId  = isUsdc ? 'copy-btn-usdc' : 'copy-btn-btc';
+  const label  = isUsdc ? 'Copy USDC address' : 'Copy BTC address';
+  navigator.clipboard.writeText(addr).then(() => {
+    const btn = document.getElementById(btnId);
     btn.textContent = 'Copied!';
     btn.classList.add('copied');
     setTimeout(() => {
-      btn.textContent = 'Copy wallet address';
+      btn.textContent = label;
       btn.classList.remove('copied');
     }, 2500);
   }).catch(() => {
-    alert('Copy manually: ' + WALLET_ADDRESS);
+    alert('Copy manually: ' + addr);
   });
 }
 
