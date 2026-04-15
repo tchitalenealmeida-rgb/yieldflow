@@ -35,6 +35,25 @@ body {
   line-height: 1.5;
 }
 
+.lang-toggle {
+  display: flex;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.lang-btn:hover { color: var(--text); }
+.lang-btn.active { background: var(--amber); color: #080810; font-weight: 700; }
+
 /* HEADER */
 header {
   border-bottom: 1px solid var(--border);
@@ -523,11 +542,15 @@ footer a { color: var(--amber); text-decoration: none; }
   <div class="logo">
     <div class="logo-mark">YF</div>
     <div class="logo-text">Yield<span>Flow</span></div>
-    <div class="tag">Africa DeFi Intelligence</div>
+    <div class="tag" data-i18n="tagline">Africa DeFi Intelligence</div>
   </div>
   <div class="header-right">
     <span id="last-updated" class="tag">Connecting to DeFiLlama...</span>
-    <button class="btn-subscribe" onclick="openModal()">Subscribe — From $30/mo USDC</button>
+    <div class="lang-toggle">
+      <button id="btn-en" class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button id="btn-pt" class="lang-btn" onclick="setLang('pt')">PT</button>
+    </div>
+    <button class="btn-subscribe" onclick="openModal()" data-i18n="subscribe_btn">Subscribe — From $30/mo USDC</button>
   </div>
 </header>
 
@@ -536,62 +559,61 @@ footer a { color: var(--amber); text-decoration: none; }
   <!-- STATS BAR -->
   <div class="stats-bar">
     <div class="stat-card">
-      <div class="stat-label">Protocols Tracked</div>
+      <div class="stat-label" data-i18n="stat1_label">Protocols Tracked</div>
       <div class="stat-value" id="stat-protocols">—</div>
-      <div class="stat-sub">Across all chains</div>
+      <div class="stat-sub" data-i18n="stat1_sub">Across all chains</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">Top APY Today</div>
+      <div class="stat-label" data-i18n="stat2_label">Top APY Today</div>
       <div class="stat-value" id="stat-top-apy">—</div>
       <div class="stat-sub" id="stat-top-name">Loading live data...</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">Avg APY · Low Risk</div>
+      <div class="stat-label" data-i18n="stat3_label">Avg APY · Low Risk</div>
       <div class="stat-value" id="stat-avg-apy">—</div>
-      <div class="stat-sub">Stablecoin pools, top 50</div>
+      <div class="stat-sub" data-i18n="stat3_sub">Stablecoin pools, top 50</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">TVL · Top 100 Pools</div>
+      <div class="stat-label" data-i18n="stat4_label">TVL · Top 100 Pools</div>
       <div class="stat-value" id="stat-tvl">—</div>
-      <div class="stat-sub">Filtered by quality</div>
+      <div class="stat-sub" data-i18n="stat4_sub">Filtered by quality</div>
     </div>
   </div>
 
-  <!-- CURATOR PICKS -->
   <div class="section-header">
-    <span class="curator-badge">Curator</span>
-    <span class="section-title">Weekly Picks — Curated by YieldFlow</span>
+    <span class="curator-badge" data-i18n="curator_badge">Curator</span>
+    <span class="section-title" data-i18n="curator_title">Weekly Picks — Curated by YieldFlow</span>
     <span class="week-label" id="week-label"></span>
     <div class="section-line"></div>
   </div>
 
   <div class="picks-grid" id="picks-grid">
-    <div class="loading" style="grid-column: 1/-1;"><div class="spinner"></div> Selecting best opportunities...</div>
+    <div class="loading" style="grid-column: 1/-1;"><div class="spinner"></div> <span data-i18n="loading_picks">Selecting best opportunities...</span></div>
   </div>
 
   <!-- LIVE TABLE -->
   <div class="section-header" style="margin-top: 1rem;">
-    <span class="section-title">Live Yield Table</span>
+    <span class="section-title" data-i18n="table_title">Live Yield Table</span>
     <div class="section-line"></div>
   </div>
 
   <div class="filters">
-    <span class="filter-label">Chain</span>
+    <span class="filter-label" data-i18n="filter_chain">Chain</span>
     <select class="filter-select" id="filter-chain" onchange="applyFilters()">
-      <option value="">All chains</option>
+      <option value="" data-i18n="all_chains">All chains</option>
     </select>
 
-    <span class="filter-label">Risk</span>
+    <span class="filter-label" data-i18n="filter_risk">Risk</span>
     <select class="filter-select" id="filter-risk" onchange="applyFilters()">
-      <option value="">All levels</option>
-      <option value="low">Low risk</option>
-      <option value="medium">Medium risk</option>
-      <option value="high">High risk</option>
+      <option value="" data-i18n="all_levels">All levels</option>
+      <option value="low" data-i18n="risk_low">Low risk</option>
+      <option value="medium" data-i18n="risk_medium">Medium risk</option>
+      <option value="high" data-i18n="risk_high">High risk</option>
     </select>
 
-    <span class="filter-label">Min APY</span>
+    <span class="filter-label" data-i18n="filter_apy">Min APY</span>
     <select class="filter-select" id="filter-apy" onchange="applyFilters()">
-      <option value="0">Any APY</option>
+      <option value="0" data-i18n="any_apy">Any APY</option>
       <option value="3">3%+</option>
       <option value="5">5%+</option>
       <option value="10">10%+</option>
@@ -599,28 +621,28 @@ footer a { color: var(--amber); text-decoration: none; }
       <option value="50">50%+</option>
     </select>
 
-    <span class="filter-label">Type</span>
+    <span class="filter-label" data-i18n="filter_type">Type</span>
     <select class="filter-select" id="filter-type" onchange="applyFilters()">
-      <option value="">All types</option>
-      <option value="stable">Stablecoin</option>
-      <option value="volatile">Volatile</option>
+      <option value="" data-i18n="all_types">All types</option>
+      <option value="stable" data-i18n="stablecoin">Stablecoin</option>
+      <option value="volatile" data-i18n="volatile">Volatile</option>
     </select>
 
     <span class="results-count" id="results-count">—</span>
   </div>
 
   <div class="table-wrap">
-    <div class="loading" id="table-loading"><div class="spinner"></div> Fetching live data from DeFiLlama...</div>
+    <div class="loading" id="table-loading"><div class="spinner"></div> <span data-i18n="loading_table">Fetching live data from DeFiLlama...</span></div>
     <table id="main-table" style="display:none;">
       <thead>
         <tr>
-          <th onclick="sortBy('project')" id="th-project">Protocol</th>
-          <th onclick="sortBy('chain')" id="th-chain">Chain</th>
+          <th onclick="sortBy('project')" id="th-project" data-i18n="th_protocol">Protocol</th>
+          <th onclick="sortBy('chain')" id="th-chain" data-i18n="th_chain">Chain</th>
           <th onclick="sortBy('apy')" id="th-apy" class="sorted">APY ↓</th>
-          <th onclick="sortBy('apyMean30d')" id="th-30d">30D Avg</th>
+          <th onclick="sortBy('apyMean30d')" id="th-30d" data-i18n="th_30d">30D Avg</th>
           <th onclick="sortBy('tvlUsd')" id="th-tvl">TVL</th>
-          <th>Risk</th>
-          <th>Type</th>
+          <th data-i18n="th_risk">Risk</th>
+          <th data-i18n="th_type">Type</th>
         </tr>
       </thead>
       <tbody id="table-body"></tbody>
@@ -632,48 +654,48 @@ footer a { color: var(--amber); text-decoration: none; }
 <!-- SUBSCRIBE MODAL -->
 <div class="modal-overlay" id="modal" onclick="handleOverlay(event)">
   <div class="modal">
-    <div class="modal-title">Subscribe to YieldFlow</div>
-    <div class="modal-sub">Access curated DeFi intelligence built for African investors. Pay directly in USDC — no banks, no friction, instant activation.</div>
+    <div class="modal-title" data-i18n="modal_title">Subscribe to YieldFlow</div>
+    <div class="modal-sub" data-i18n="modal_sub">Access curated DeFi intelligence built for African investors. Pay directly in USDC — no banks, no friction, instant activation.</div>
 
     <div class="plan-grid">
       <div class="plan-card selected" id="plan-retail" onclick="selectPlan('retail')">
-        <div class="plan-name">Investor</div>
+        <div class="plan-name" data-i18n="plan1_name">Investor</div>
         <div class="plan-price">$30</div>
-        <div class="plan-period">/month · paid in USDC</div>
-        <div class="plan-features">Full dashboard access<br>Weekly curator picks<br>Risk classifications</div>
+        <div class="plan-period" data-i18n="plan_period">/month · paid in USDC or BTC</div>
+        <div class="plan-features" data-i18n="plan1_features">Full dashboard access<br>Weekly curator picks<br>Risk classifications</div>
       </div>
       <div class="plan-card" id="plan-pro" onclick="selectPlan('pro')">
-        <div class="plan-name">Institutional</div>
+        <div class="plan-name" data-i18n="plan2_name">Institutional</div>
         <div class="plan-price">$100</div>
-        <div class="plan-period">/month · paid in USDC</div>
-        <div class="plan-features">All Investor features<br>Priority weekly briefing<br>Analytics CSV export</div>
+        <div class="plan-period" data-i18n="plan_period">/month · paid in USDC or BTC</div>
+        <div class="plan-features" data-i18n="plan2_features">All Investor features<br>Priority weekly briefing<br>Analytics CSV export</div>
       </div>
     </div>
 
     <div class="wallet-box">
-      <div class="wallet-label">USDC · Ethereum Network (ERC-20) only</div>
+      <div class="wallet-label" data-i18n="usdc_label">USDC · Ethereum Network (ERC-20) only</div>
       <div class="wallet-address" id="wallet-display">YOUR_WALLET_ADDRESS_HERE</div>
     </div>
-    <button class="btn-copy" id="copy-btn-usdc" onclick="copyWallet('usdc')">Copy USDC address</button>
+    <button class="btn-copy" id="copy-btn-usdc" onclick="copyWallet('usdc')" data-i18n="copy_usdc">Copy USDC address</button>
 
     <div class="wallet-box" style="margin-top:10px;">
-      <div class="wallet-label">BTC · Bitcoin Network</div>
+      <div class="wallet-label" data-i18n="btc_label">BTC · Bitcoin Network</div>
       <div class="wallet-address" id="btc-display">YOUR_BTC_ADDRESS_HERE</div>
     </div>
-    <button class="btn-copy" id="copy-btn-btc" onclick="copyWallet('btc')" style="margin-bottom:10px;">Copy BTC address</button>
+    <button class="btn-copy" id="copy-btn-btc" onclick="copyWallet('btc')" style="margin-bottom:10px;" data-i18n="copy_btc">Copy BTC address</button>
 
     <div class="modal-footer">
-      After payment, send proof of transfer to <span>Tchitalene.almeida@gmail.com</span><br>
-      Access activated within 2 hours.
+      <span data-i18n="modal_footer_1">After payment, send proof of transfer to</span> <span>Tchitalene.almeida@gmail.com</span><br>
+      <span data-i18n="modal_footer_2">Access activated within 2 hours.</span>
     </div>
 
-    <button class="btn-close" onclick="closeModal()">← Back to dashboard</button>
+    <button class="btn-close" onclick="closeModal()" data-i18n="modal_close">← Back to dashboard</button>
   </div>
 </div>
 
 <footer>
-  YieldFlow Africa &nbsp;·&nbsp; Data sourced from <a href="https://defillama.com" target="_blank">DeFiLlama</a> &nbsp;·&nbsp; Updated every 24 hours<br>
-  Not financial advice. Always do your own research. DeFi involves significant risk of loss.
+  YieldFlow Africa &nbsp;·&nbsp; <span data-i18n="footer_source">Data sourced from</span> <a href="https://defillama.com" target="_blank">DeFiLlama</a> &nbsp;·&nbsp; <span data-i18n="footer_updated">Updated every 24 hours</span><br>
+  <span data-i18n="footer_disclaimer">Not financial advice. Always do your own research. DeFi involves significant risk of loss.</span>
 </footer>
 
 <script>
@@ -787,9 +809,16 @@ function updateStats() {
 
 // --- CURATOR PICKS ---
 const PICK_NOTES = {
-  conservative: 'Highest-rated stablecoin pool with strong TVL and an established protocol. Ideal for capital preservation and USDC yield.',
-  balanced:     'Best risk-adjusted opportunity this week. Established protocol with consistent yield history and strong liquidity.',
-  growth:       'Elevated APY with higher risk. Keep position size contained — recommended max 10–15% of your DeFi allocation.',
+  en: {
+    conservative: 'Highest-rated stablecoin pool with strong TVL and an established protocol. Ideal for capital preservation and USDC yield.',
+    balanced: 'Best risk-adjusted opportunity this week. Established protocol with consistent yield history and strong liquidity.',
+    growth: 'Elevated APY with higher risk. Keep position size contained — recommended max 10–15% of your DeFi allocation.',
+  },
+  pt: {
+    conservative: 'Pool stablecoin mais bem classificada, com TVL sólido e protocolo estabelecido. Ideal para preservação de capital e yield em USDC.',
+    balanced: 'Melhor oportunidade ajustada ao risco esta semana. Protocolo estabelecido com histórico de yield consistente e liquidez forte.',
+    growth: 'APY elevado com risco mais alto. Mantém o tamanho da posição contido — máximo recomendado de 10–15% da tua alocação DeFi.',
+  }
 };
 
 function renderPicks() {
@@ -797,17 +826,24 @@ function renderPicks() {
   const medPool  = allPools.find(p => p.risk === 'medium' && p.apy  > 5  && p.tvlUsd > 40e6);
   const highPool = allPools.find(p => p.risk === 'high'   && p.apy  > 15 && p.tvlUsd > 15e6);
 
+  const t = TRANSLATIONS[currentLang];
+  const tierLabels = {
+    en: { conservative: 'Conservative', balanced: 'Balanced', growth: 'Growth' },
+    pt: { conservative: 'Conservador', balanced: 'Equilibrado', growth: 'Crescimento' }
+  };
+  const labels = tierLabels[currentLang];
+
   const picks = [
-    { pool: lowPool,  label: 'Conservative', key: 'conservative' },
-    { pool: medPool,  label: 'Balanced',     key: 'balanced',     featured: true },
-    { pool: highPool, label: 'Growth',       key: 'growth' },
+    { pool: lowPool,  label: labels.conservative, key: 'conservative' },
+    { pool: medPool,  label: labels.balanced,      key: 'balanced',     featured: true },
+    { pool: highPool, label: labels.growth,        key: 'growth' },
   ];
 
   document.getElementById('picks-grid').innerHTML = picks.map(({ pool, label, key, featured }) => {
     if (!pool) return `
       <div class="pick-card">
         <div class="pick-tier">${label}</div>
-        <div class="pick-symbol" style="margin-top:2rem;">No qualifying pool found this week</div>
+        <div class="pick-symbol" style="margin-top:2rem;">${currentLang === 'pt' ? 'Nenhum pool qualificado esta semana' : 'No qualifying pool found this week'}</div>
       </div>`;
     return `
       <div class="pick-card ${featured ? 'featured' : ''}">
@@ -821,7 +857,7 @@ function renderPicks() {
         <div class="pick-apy-label">Annual Percentage Yield</div>
         <div class="pick-tvl">TVL ${fmtTvl(pool.tvlUsd)}</div>
         <span class="risk-badge risk-${pool.risk}">${pool.risk} risk</span>
-        <div class="pick-note">${PICK_NOTES[key]}</div>
+        <div class="pick-note">${PICK_NOTES[currentLang][key]}</div>
       </div>`;
   }).join('');
 }
@@ -857,7 +893,7 @@ function applyFilters() {
   sortPools();
   renderTable();
   document.getElementById('results-count').textContent =
-    filteredPools.length + ' pools';
+    filteredPools.length + ' ' + TRANSLATIONS[currentLang].pools;
 }
 
 // --- SORT ---
@@ -885,7 +921,11 @@ function renderTable() {
   const tbody   = document.getElementById('table-body');
   const visible = filteredPools.slice(0, 150);
 
-  tbody.innerHTML = visible.map(p => `
+  const t = TRANSLATIONS[currentLang];
+  tbody.innerHTML = visible.map(p => {
+    const riskLabel = p.risk === 'low' ? t.risk_low : p.risk === 'medium' ? t.risk_medium : t.risk_high;
+    const typeLabel = p.stablecoin ? t.stablecoin : t.volatile;
+    return `
     <tr>
       <td>
         <div class="td-protocol">${fmtProject(p.project)}</div>
@@ -895,10 +935,10 @@ function renderTable() {
       <td class="td-apy">${fmtApy(p.apy)}</td>
       <td class="td-chg">${fmtChange(p.apyMean30d)}</td>
       <td class="td-tvl">${fmtTvl(p.tvlUsd)}</td>
-      <td><span class="risk-badge risk-${p.risk}">${p.risk}</span></td>
-      <td class="td-chain">${p.stablecoin ? 'Stable' : 'Volatile'}</td>
-    </tr>
-  `).join('');
+      <td><span class="risk-badge risk-${p.risk}">${riskLabel}</span></td>
+      <td class="td-chain">${typeLabel}</td>
+    </tr>`;
+  }).join('');
 }
 
 // --- MODAL ---
@@ -919,7 +959,7 @@ function copyWallet(type) {
   const isUsdc = type === 'usdc';
   const addr   = isUsdc ? WALLET_ADDRESS : BTC_ADDRESS;
   const btnId  = isUsdc ? 'copy-btn-usdc' : 'copy-btn-btc';
-  const label  = isUsdc ? 'Copy USDC address' : 'Copy BTC address';
+  const label  = isUsdc ? TRANSLATIONS[currentLang].copy_usdc : TRANSLATIONS[currentLang].copy_btc;
   navigator.clipboard.writeText(addr).then(() => {
     const btn = document.getElementById(btnId);
     btn.textContent = 'Copied!';
@@ -931,6 +971,104 @@ function copyWallet(type) {
   }).catch(() => {
     alert('Copy manually: ' + addr);
   });
+}
+
+// --- I18N ---
+const TRANSLATIONS = {
+  en: {
+    tagline: 'Africa DeFi Intelligence',
+    subscribe_btn: 'Subscribe — From $30/mo USDC',
+    stat1_label: 'Protocols Tracked', stat1_sub: 'Across all chains',
+    stat2_label: 'Top APY Today',
+    stat3_label: 'Avg APY · Low Risk', stat3_sub: 'Stablecoin pools, top 50',
+    stat4_label: 'TVL · Top 100 Pools', stat4_sub: 'Filtered by quality',
+    curator_badge: 'Curator',
+    curator_title: 'Weekly Picks — Curated by YieldFlow',
+    loading_picks: 'Selecting best opportunities...',
+    table_title: 'Live Yield Table',
+    loading_table: 'Fetching live data from DeFiLlama...',
+    filter_chain: 'Chain', all_chains: 'All chains',
+    filter_risk: 'Risk', all_levels: 'All levels',
+    risk_low: 'Low risk', risk_medium: 'Medium risk', risk_high: 'High risk',
+    filter_apy: 'Min APY', any_apy: 'Any APY',
+    filter_type: 'Type', all_types: 'All types',
+    stablecoin: 'Stablecoin', volatile: 'Volatile',
+    th_protocol: 'Protocol', th_chain: 'Chain', th_30d: '30D Avg',
+    th_risk: 'Risk', th_type: 'Type',
+    modal_title: 'Subscribe to YieldFlow',
+    modal_sub: 'Access curated DeFi intelligence built for African investors. Pay directly in USDC or BTC — no banks, no friction, instant activation.',
+    plan1_name: 'Investor', plan2_name: 'Institutional',
+    plan_period: '/month · paid in USDC or BTC',
+    plan1_features: 'Full dashboard access<br>Weekly curator picks<br>Risk classifications',
+    plan2_features: 'All Investor features<br>Priority weekly briefing<br>Analytics CSV export',
+    usdc_label: 'USDC · Ethereum Network (ERC-20) only',
+    btc_label: 'BTC · Bitcoin Network',
+    copy_usdc: 'Copy USDC address', copy_btc: 'Copy BTC address',
+    modal_footer_1: 'After payment, send proof of transfer to',
+    modal_footer_2: 'Access activated within 2 hours.',
+    modal_close: '← Back to dashboard',
+    footer_source: 'Data sourced from',
+    footer_updated: 'Updated every 24 hours',
+    footer_disclaimer: 'Not financial advice. Always do your own research. DeFi involves significant risk of loss.',
+    connecting: 'Connecting to DeFiLlama...',
+    pools: 'pools',
+  },
+  pt: {
+    tagline: 'Inteligência DeFi para África',
+    subscribe_btn: 'Subscrever — A partir de $30/mês USDC',
+    stat1_label: 'Protocolos Monitorizados', stat1_sub: 'Em todas as chains',
+    stat2_label: 'Top APY Hoje',
+    stat3_label: 'APY Médio · Risco Baixo', stat3_sub: 'Pools stablecoin, top 50',
+    stat4_label: 'TVL · Top 100 Pools', stat4_sub: 'Filtrado por qualidade',
+    curator_badge: 'Curador',
+    curator_title: 'Picks Semanais — Curados pela YieldFlow',
+    loading_picks: 'A seleccionar as melhores oportunidades...',
+    table_title: 'Tabela de Yields em Tempo Real',
+    loading_table: 'A carregar dados da DeFiLlama...',
+    filter_chain: 'Chain', all_chains: 'Todas as chains',
+    filter_risk: 'Risco', all_levels: 'Todos os níveis',
+    risk_low: 'Risco baixo', risk_medium: 'Risco médio', risk_high: 'Risco alto',
+    filter_apy: 'APY mín.', any_apy: 'Qualquer APY',
+    filter_type: 'Tipo', all_types: 'Todos os tipos',
+    stablecoin: 'Stablecoin', volatile: 'Volátil',
+    th_protocol: 'Protocolo', th_chain: 'Chain', th_30d: 'Média 30D',
+    th_risk: 'Risco', th_type: 'Tipo',
+    modal_title: 'Subscrever o YieldFlow',
+    modal_sub: 'Acede a inteligência DeFi curada para investidores africanos. Paga directamente em USDC ou BTC — sem bancos, sem fricção, activação imediata.',
+    plan1_name: 'Investidor', plan2_name: 'Institucional',
+    plan_period: '/mês · pago em USDC ou BTC',
+    plan1_features: 'Acesso completo ao dashboard<br>Picks semanais do curador<br>Classificações de risco',
+    plan2_features: 'Todas as funcionalidades Investidor<br>Briefing semanal prioritário<br>Exportação CSV de análises',
+    usdc_label: 'USDC · Rede Ethereum (ERC-20) apenas',
+    btc_label: 'BTC · Rede Bitcoin',
+    copy_usdc: 'Copiar endereço USDC', copy_btc: 'Copiar endereço BTC',
+    modal_footer_1: 'Após o pagamento, envia comprovativo para',
+    modal_footer_2: 'Acesso activado em até 2 horas.',
+    modal_close: '← Voltar ao dashboard',
+    footer_source: 'Dados fornecidos por',
+    footer_updated: 'Actualizado a cada 24 horas',
+    footer_disclaimer: 'Não é aconselhamento financeiro. Faz sempre a tua própria pesquisa. DeFi envolve risco significativo de perda.',
+    connecting: 'A ligar ao DeFiLlama...',
+    pools: 'pools',
+  }
+};
+
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = TRANSLATIONS[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
+  const lastUpd = document.getElementById('last-updated');
+  if (lastUpd.textContent.includes('Connecting') || lastUpd.textContent.includes('ligar')) {
+    lastUpd.textContent = t.connecting;
+  }
+  renderTable();
 }
 
 // --- INIT ---
