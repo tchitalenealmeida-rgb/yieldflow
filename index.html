@@ -686,7 +686,11 @@ footer a { color: var(--amber); text-decoration: none; }
     <button class="btn-copy" id="copy-btn-btc" onclick="copyWallet('btc')" style="margin-bottom:10px;" data-i18n="copy_btc">Copy BTC address</button>
 
     <div class="modal-footer">
-      <span data-i18n="modal_footer_1">After payment, send proof of transfer to</span> <span>Info@yieldflow-africa.com</span><br>
+      <span data-i18n="modal_footer_1">After payment, send proof of transfer to</span><br>
+      <span style="display:inline-flex;align-items:center;gap:8px;margin:6px 0;">
+        <span style="color:#ffffff;white-space:nowrap;font-family:var(--font-mono);font-size:11px;">Info@yieldflow-africa.com</span>
+        <button onclick="copyEmail()" id="copy-email-btn" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:3px 7px;cursor:pointer;font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,0.5);transition:background 0.15s;" title="Copy email">⧉</button>
+      </span><br>
       <span data-i18n="modal_footer_2">Access activated within 2 hours.</span>
     </div>
 
@@ -1118,6 +1122,20 @@ function setLang(lang) {
     lastUpd.textContent = t.connecting;
   }
   renderTable();
+}
+
+function copyEmail() {
+  navigator.clipboard.writeText('Info@yieldflow-africa.com').then(() => {
+    const btn = document.getElementById('copy-email-btn');
+    btn.textContent = '✓';
+    btn.style.color = '#10b981';
+    btn.style.borderColor = 'rgba(16,185,129,0.3)';
+    setTimeout(() => {
+      btn.textContent = '⧉';
+      btn.style.color = 'rgba(255,255,255,0.5)';
+      btn.style.borderColor = 'rgba(255,255,255,0.15)';
+    }, 2500);
+  }).catch(() => alert('Copy manually: Info@yieldflow-africa.com'));
 }
 
 // --- INIT ---
