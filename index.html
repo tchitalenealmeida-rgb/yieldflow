@@ -549,6 +549,7 @@ footer a { color: var(--amber); text-decoration: none; }
     <div class="lang-toggle">
       <button id="btn-en" class="lang-btn active" onclick="setLang('en')">EN</button>
       <button id="btn-pt" class="lang-btn" onclick="setLang('pt')">PT</button>
+      <button id="btn-fr" class="lang-btn" onclick="setLang('fr')">FR</button>
     </div>
     <button class="btn-subscribe" onclick="openModal()" data-i18n="subscribe_btn">Subscribe — From $30/mo USDC</button>
   </div>
@@ -818,6 +819,11 @@ const PICK_NOTES = {
     conservative: 'Pool stablecoin mais bem classificada, com TVL sólido e protocolo estabelecido. Ideal para preservação de capital e yield em USDC.',
     balanced: 'Melhor oportunidade ajustada ao risco esta semana. Protocolo estabelecido com histórico de yield consistente e liquidez forte.',
     growth: 'APY elevado com risco mais alto. Mantém o tamanho da posição contido — máximo recomendado de 10–15% da tua alocação DeFi.',
+  },
+  fr: {
+    conservative: "Pool stablecoin le mieux noté, avec une TVL solide et un protocole établi. Idéal pour la préservation du capital et le rendement en USDC.",
+    balanced: "Meilleure opportunité ajustée au risque cette semaine. Protocole établi avec un historique de rendement constant et une liquidité forte.",
+    growth: "APY élevé avec un risque plus important. Gardez la taille de la position limitée — maximum recommandé de 10–15% de votre allocation DeFi.",
   }
 };
 
@@ -829,7 +835,8 @@ function renderPicks() {
   const t = TRANSLATIONS[currentLang];
   const tierLabels = {
     en: { conservative: 'Conservative', balanced: 'Balanced', growth: 'Growth' },
-    pt: { conservative: 'Conservador', balanced: 'Equilibrado', growth: 'Crescimento' }
+    pt: { conservative: 'Conservador', balanced: 'Equilibrado', growth: 'Crescimento' },
+    fr: { conservative: 'Conservateur', balanced: 'Équilibré', growth: 'Croissance' }
   };
   const labels = tierLabels[currentLang];
 
@@ -843,7 +850,7 @@ function renderPicks() {
     if (!pool) return `
       <div class="pick-card">
         <div class="pick-tier">${label}</div>
-        <div class="pick-symbol" style="margin-top:2rem;">${currentLang === 'pt' ? 'Nenhum pool qualificado esta semana' : 'No qualifying pool found this week'}</div>
+        <div class="pick-symbol" style="margin-top:2rem;">${currentLang === 'pt' ? 'Nenhum pool qualificado esta semana' : currentLang === 'fr' ? 'Aucun pool qualifié cette semaine' : 'No qualifying pool found this week'}</div>
       </div>`;
     return `
       <div class="pick-card ${featured ? 'featured' : ''}">
@@ -1052,6 +1059,44 @@ const TRANSLATIONS = {
     footer_disclaimer: 'Não é aconselhamento financeiro. Faz sempre a tua própria pesquisa. DeFi envolve risco significativo de perda.',
     connecting: 'A ligar ao DeFiLlama...',
     pools: 'pools',
+  },
+  fr: {
+    tagline: "Intelligence DeFi pour l'Afrique",
+    subscribe_btn: "S'abonner — À partir de $30/mois USDC",
+    stat1_label: 'Protocoles Suivis', stat1_sub: 'Sur toutes les chaînes',
+    stat2_label: "Top APY Aujourd'hui",
+    stat3_label: 'APY Moyen · Risque Faible', stat3_sub: 'Pools stablecoin, top 50',
+    stat4_label: 'TVL · Top 100 Pools', stat4_sub: 'Filtré par qualité',
+    curator_badge: 'Curateur',
+    curator_title: 'Sélections Hebdomadaires — Curatées par YieldFlow',
+    loading_picks: 'Sélection des meilleures opportunités...',
+    table_title: 'Tableau des Rendements en Direct',
+    loading_table: 'Chargement des données DeFiLlama...',
+    filter_chain: 'Chaîne', all_chains: 'Toutes les chaînes',
+    filter_risk: 'Risque', all_levels: 'Tous les niveaux',
+    risk_low: 'Risque faible', risk_medium: 'Risque moyen', risk_high: 'Risque élevé',
+    filter_apy: 'APY min.', any_apy: 'Tout APY',
+    filter_type: 'Type', all_types: 'Tous les types',
+    stablecoin: 'Stablecoin', volatile: 'Volatile',
+    th_protocol: 'Protocole', th_chain: 'Chaîne', th_30d: 'Moy. 30J',
+    th_risk: 'Risque', th_type: 'Type',
+    modal_title: "S'abonner à YieldFlow",
+    modal_sub: "Accédez à l'intelligence DeFi conçue pour les investisseurs africains. Payez directement en USDC ou BTC — sans banque, sans friction, activation immédiate.",
+    plan1_name: 'Investisseur', plan2_name: 'Institutionnel',
+    plan_period: '/mois · payé en USDC ou BTC',
+    plan1_features: 'Accès complet au tableau de bord<br>Sélections hebdomadaires<br>Classifications de risque',
+    plan2_features: 'Toutes les fonctionnalités Investisseur<br>Briefing hebdomadaire prioritaire<br>Export CSV des analyses',
+    usdc_label: 'USDC · Réseau Ethereum (ERC-20) uniquement',
+    btc_label: 'BTC · Réseau Bitcoin',
+    copy_usdc: "Copier l'adresse USDC", copy_btc: "Copier l'adresse BTC",
+    modal_footer_1: 'Après paiement, envoyez la preuve de transfert à',
+    modal_footer_2: 'Accès activé en 2 heures maximum.',
+    modal_close: '← Retour au tableau de bord',
+    footer_source: 'Données fournies par',
+    footer_updated: 'Mis à jour toutes les 24 heures',
+    footer_disclaimer: 'Pas de conseil financier. Faites toujours vos propres recherches. La DeFi implique un risque significatif de perte.',
+    connecting: 'Connexion à DeFiLlama...',
+    pools: 'pools',
   }
 };
 
@@ -1066,6 +1111,7 @@ function setLang(lang) {
   });
   document.getElementById('btn-en').classList.toggle('active', lang === 'en');
   document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
+  document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
   const lastUpd = document.getElementById('last-updated');
   if (lastUpd.textContent.includes('Connecting') || lastUpd.textContent.includes('ligar')) {
     lastUpd.textContent = t.connecting;
