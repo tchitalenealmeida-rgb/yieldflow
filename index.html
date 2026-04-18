@@ -828,9 +828,9 @@ const PICK_NOTES = {
 };
 
 function renderPicks() {
-  const lowPool  = allPools.find(p => p.risk === 'low'    && p.apy  > 2  && p.tvlUsd > 50e6);
-  const medPool  = allPools.find(p => p.risk === 'medium' && p.apy  > 5  && p.tvlUsd > 40e6);
-  const highPool = allPools.find(p => p.risk === 'high'   && p.apy  > 15 && p.tvlUsd > 15e6);
+  const lowPool  = allPools.find(p => p.risk === 'low'    && p.apy  > 2  && p.tvlUsd > 20e6);
+  const medPool  = allPools.find(p => p.risk === 'medium' && p.apy  > 5  && p.tvlUsd > 20e6);
+  const highPool = allPools.find(p => p.risk === 'high'   && p.apy  > 5  && p.tvlUsd > 5e6);
 
   const t = TRANSLATIONS[currentLang];
   const tierLabels = {
@@ -853,7 +853,7 @@ function renderPicks() {
         <div class="pick-symbol" style="margin-top:2rem;">${currentLang === 'pt' ? 'Nenhum pool qualificado esta semana' : currentLang === 'fr' ? 'Aucun pool qualifié cette semaine' : 'No qualifying pool found this week'}</div>
       </div>`;
     return `
-      <div class="pick-card ${featured ? 'featured' : ''}">
+      <div class="pick-card ${featured ? 'featured' : ''}" onclick="window.open('https://defillama.com/yields/pool/${pool.pool}','_blank')" style="cursor:pointer;">
         <div class="pick-tier">
           ${label}
           <span class="pick-chain-tag">${pool.chain || '—'}</span>
@@ -865,6 +865,7 @@ function renderPicks() {
         <div class="pick-tvl">TVL ${fmtTvl(pool.tvlUsd)}</div>
         <span class="risk-badge risk-${pool.risk}">${pool.risk} risk</span>
         <div class="pick-note">${PICK_NOTES[currentLang][key]}</div>
+        <div style="margin-top:10px;font-family:var(--font-mono);font-size:9px;color:var(--amber);opacity:0.7;">Ver no DeFiLlama →</div>
       </div>`;
   }).join('');
 }
