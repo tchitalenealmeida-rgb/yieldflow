@@ -523,6 +523,149 @@ footer {
 
 footer a { color: var(--amber); text-decoration: none; }
 
+/* ABOUT MODAL */
+.about-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 300; align-items: center; justify-content: center;
+  backdrop-filter: blur(8px);
+}
+.about-overlay.active { display: flex; }
+
+.about-modal {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  max-width: 560px;
+  width: 92%;
+  overflow: hidden;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.about-hero {
+  background: var(--bg);
+  padding: 2.5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.about-logo-canvas {
+  width: 110px; height: 110px;
+  border-radius: 50%;
+  display: block;
+}
+
+.about-brand {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  text-align: center;
+}
+.about-brand span { color: var(--amber); }
+
+.about-tagline-pill {
+  background: var(--amber-dim);
+  border: 1px solid rgba(245,158,11,0.25);
+  color: var(--amber);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.about-body {
+  padding: 1.8rem 2rem;
+}
+
+.about-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 1.4rem;
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 1.4rem;
+}
+
+.about-stat {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.about-stat-val {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--amber);
+  letter-spacing: -0.02em;
+}
+
+.about-stat-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 3px;
+}
+
+.about-links {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1.2rem;
+}
+
+.about-link {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.about-link:hover { opacity: 0.8; }
+.about-link.primary {
+  background: var(--amber);
+  color: #080810;
+  font-weight: 700;
+}
+.about-link.secondary {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--muted);
+}
+
+.about-close {
+  background: transparent; border: none;
+  color: var(--muted); cursor: pointer;
+  font-family: var(--font-mono); font-size: 10px;
+  width: 100%; padding: 8px;
+  transition: color 0.15s;
+  border-top: 1px solid var(--border);
+}
+.about-close:hover { color: var(--text); }
+
 /* RESPONSIVE */
 @media (max-width: 900px) {
   .stats-bar { grid-template-columns: repeat(2, 1fr); }
@@ -542,7 +685,7 @@ footer a { color: var(--amber); text-decoration: none; }
   <div class="logo">
     <div class="logo-mark">YF</div>
     <div class="logo-text">Yield<span>Flow</span></div>
-    <div class="tag" data-i18n="tagline">Africa DeFi Intelligence</div>
+    <div class="tag" data-i18n="tagline" onclick="openAbout()" style="cursor:pointer;transition:border-color 0.2s,color 0.2s;" onmouseover="this.style.borderColor='rgba(245,158,11,0.5)';this.style.color='var(--amber)'" onmouseout="this.style.borderColor='';this.style.color=''">Africa DeFi Intelligence</div>
   </div>
   <div class="header-right">
     <span id="last-updated" class="tag">Connecting to DeFiLlama...</span>
@@ -651,6 +794,41 @@ footer a { color: var(--amber); text-decoration: none; }
   </div>
 
 </main>
+
+<!-- ABOUT MODAL -->
+<div class="about-overlay" id="about-modal" onclick="handleAboutOverlay(event)">
+  <div class="about-modal">
+    <div class="about-hero">
+      <canvas id="about-logo" class="about-logo-canvas" width="220" height="220"></canvas>
+      <div class="about-brand">Yield<span>Flow</span> Africa</div>
+      <div class="about-tagline-pill" data-i18n="tagline">Africa DeFi Intelligence</div>
+    </div>
+    <div class="about-body">
+      <div class="about-desc" id="about-desc">
+        YieldFlow Africa is a real-time DeFi yield intelligence platform built for African investors. We aggregate yield opportunities across 500+ protocols and all major blockchains — with clear risk classifications, weekly curated picks, and intuitive filtering. Available in English, Portuguese and French. Subscription from $30/month, paid in USDC or BTC.
+      </div>
+      <div class="about-stats">
+        <div class="about-stat">
+          <div class="about-stat-val">500+</div>
+          <div class="about-stat-label">Protocols</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-val">$30</div>
+          <div class="about-stat-label">From /month</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-val">3</div>
+          <div class="about-stat-label">Languages</div>
+        </div>
+      </div>
+      <div class="about-links">
+        <a href="https://yieldflow-ten.vercel.app" class="about-link primary">yieldflow-ten.vercel.app</a>
+        <a href="mailto:Info@yieldflow-africa.com" class="about-link secondary">Info@yieldflow-africa.com</a>
+      </div>
+    </div>
+    <button class="about-close" onclick="closeAbout()">← Close</button>
+  </div>
+</div>
 
 <!-- SUBSCRIBE MODAL -->
 <div class="modal-overlay" id="modal" onclick="handleOverlay(event)">
@@ -1122,6 +1300,84 @@ function setLang(lang) {
     lastUpd.textContent = t.connecting;
   }
   renderTable();
+  if (document.getElementById('about-modal').classList.contains('active')) updateAboutLang();
+}
+
+// --- ABOUT MODAL ---
+const ABOUT_TEXTS = {
+  en: "YieldFlow Africa is a real-time DeFi yield intelligence platform built for African investors. We aggregate yield opportunities across 500+ protocols and all major blockchains — with clear risk classifications, weekly curated picks, and intuitive filtering. Available in English, Portuguese and French. Subscription from $30/month, paid in USDC or BTC.",
+  pt: "A YieldFlow Africa é uma plataforma de inteligência DeFi em tempo real, criada para investidores africanos. Agrega oportunidades de yield em mais de 500 protocolos e todas as principais blockchains — com classificação de risco, picks semanais curados e filtros intuitivos. Disponível em Inglês, Português e Francês. Subscrição a partir de $30/mês, paga em USDC ou BTC.",
+  fr: "YieldFlow Africa est une plateforme d'intelligence DeFi en temps réel, conçue pour les investisseurs africains. Elle agrège les opportunités de rendement sur plus de 500 protocoles et toutes les principales blockchains — avec des classifications de risque claires, des sélections hebdomadaires et des filtres intuitifs. Disponible en Anglais, Portugais et Français. Abonnement à partir de 30$/mois, payé en USDC ou BTC."
+};
+
+const ABOUT_STATS_LABELS = {
+  en: { protocols: 'Protocols', from: 'From /month', languages: 'Languages' },
+  pt: { protocols: 'Protocolos', from: 'A partir de /mês', languages: 'Línguas' },
+  fr: { protocols: 'Protocoles', from: 'À partir de /mois', languages: 'Langues' }
+};
+
+function drawAboutLogo() {
+  const canvas = document.getElementById('about-logo');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = 220, h = 220, cx = w/2, cy = h/2;
+  ctx.clearRect(0, 0, w, h);
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, cy, w/2, 0, Math.PI * 2);
+  ctx.clip();
+
+  ctx.fillStyle = '#080810';
+  ctx.fillRect(0, 0, w, h);
+
+  ctx.strokeStyle = 'rgba(245,158,11,0.05)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x <= w; x += 22) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke(); }
+  for (let y = 0; y <= h; y += 22) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
+
+  ctx.beginPath(); ctx.arc(cx, cy, 95, 0, Math.PI*2);
+  ctx.strokeStyle = 'rgba(245,158,11,0.15)'; ctx.lineWidth = 3; ctx.stroke();
+
+  ctx.beginPath(); ctx.arc(cx, cy, 82, 0, Math.PI*2);
+  ctx.fillStyle = '#0f0f1c'; ctx.fill();
+  ctx.strokeStyle = 'rgba(245,158,11,0.4)'; ctx.lineWidth = 2.5; ctx.stroke();
+
+  ctx.font = '700 60px "Space Mono", monospace';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#f59e0b';
+  ctx.fillText('YF', cx, cy - 2);
+
+  const dotY = cy + 50, dotR = 4;
+  ctx.beginPath(); ctx.arc(cx-10, dotY, dotR, 0, Math.PI*2); ctx.fillStyle = '#f59e0b'; ctx.fill();
+  ctx.beginPath(); ctx.arc(cx, dotY, dotR, 0, Math.PI*2); ctx.fillStyle = 'rgba(245,158,11,0.45)'; ctx.fill();
+  ctx.beginPath(); ctx.arc(cx+10, dotY, dotR, 0, Math.PI*2); ctx.fillStyle = 'rgba(245,158,11,0.15)'; ctx.fill();
+
+  ctx.restore();
+}
+
+function openAbout() {
+  document.getElementById('about-modal').classList.add('active');
+  drawAboutLogo();
+  updateAboutLang();
+}
+
+function closeAbout() {
+  document.getElementById('about-modal').classList.remove('active');
+}
+
+function handleAboutOverlay(e) {
+  if (e.target === document.getElementById('about-modal')) closeAbout();
+}
+
+function updateAboutLang() {
+  const lang = currentLang;
+  document.getElementById('about-desc').textContent = ABOUT_TEXTS[lang] || ABOUT_TEXTS.en;
+  const labels = ABOUT_STATS_LABELS[lang] || ABOUT_STATS_LABELS.en;
+  const statLabels = document.querySelectorAll('.about-stat-label');
+  if (statLabels[0]) statLabels[0].textContent = labels.protocols;
+  if (statLabels[1]) statLabels[1].textContent = labels.from;
+  if (statLabels[2]) statLabels[2].textContent = labels.languages;
 }
 
 function copyEmail() {
