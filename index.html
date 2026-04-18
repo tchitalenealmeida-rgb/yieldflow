@@ -928,8 +928,10 @@ function renderTable() {
     return `
     <tr>
       <td>
-        <div class="td-protocol">${fmtProject(p.project)}</div>
-        <div class="td-symbol">${p.symbol || ''}</div>
+        <a href="https://defillama.com/yields/pool/${p.pool}" target="_blank" style="text-decoration:none;">
+          <div class="td-protocol" style="color:var(--amber);cursor:pointer;">${fmtProject(p.project)}</div>
+          <div class="td-symbol">${p.symbol || ''}</div>
+        </a>
       </td>
       <td class="td-chain">${p.chain || '—'}</td>
       <td class="td-apy">${fmtApy(p.apy)}</td>
